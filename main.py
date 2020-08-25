@@ -32,5 +32,22 @@ if __name__ == '__main__':
     tab_rq_registers=[]
     tab_rw_rq_registers=[]
     tab_rp_registers=[]
+#TCP
+    print("Connect to VRC\n")
+    print("IP = 127.0.0.1\n")
+    print("Port = 502\n")
 
-    
+    """ctx = modbus_new_tcp("172.29.152.4", 502);"""
+    ctx = ModbusClient('192.168.27.44', 502)
+
+    """ctx = modbus_new_tcp("127.0.0.1", 502);"""
+    if ctx.connect()==False:
+        sys.stderr("Connection failed: %s\n")
+        ctx.close()
+
+    """Allocate and initialize the different memory spaces """
+    nb = ADDRESS_END - ADDRESS_START;
+
+
+
+    print(pointAdress.X)
