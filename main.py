@@ -9,8 +9,9 @@ try:
     client1 = ModbusTcpClient(host,port)
     connection = client1.connect()
     print ('connection to  '+host)
-    request1 = client1.read_coils(0x00,1,unit=0x01)
-    print(request1)
+    request1 = client1.write_register(0x01,97,unit=0x01)
+
+
 
 except:
     print ("Modbus connectie error")
