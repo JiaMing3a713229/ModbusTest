@@ -4,6 +4,9 @@ from enum import Enum
 
 host = '127.0.0.1'
 port = 502
+nb_loop = nb_fail = 0;
+Slave_ID = 2;
+
 class pointAddress(Enum):
     X = 0x1010
     Y = 0x1012
@@ -24,18 +27,21 @@ def run_sync_client():
         client1 = ModbusTcpClient(host,port)
         connection = client1.connect()
         print ('connection to  '+host)
+        # 三個欄位為：(起始Address, 要讀入的AI數量, Modbus slave ID)
+
+        #client1.write_register(0x0000, 0x0101, unit=0x02)
+
+        #rc = client1.write_register(0x220,1,unit=0x02)
+        rc = client1.read_holding_registers(0x01,12,unit=0x02)
+        print(rc.registers)
+        #client1.write_register(0x0002, 0x0101, unit=0x02)
+        #client1.write_register(0x0006, 0x0101, unit=0x02)
+        #client1.write_register(0x0007, 0x0101, unit=0x02)
+        #rl = client1.read_holding_registers(0x0000,1,unit=0x01)
 
 
-
-        client1.write_register(0x0000, 0x0101,unit=0x01)
-        client1.write_register(0x0001, 0x0101, unit=0x01)
-        client1.write_register(0x0002, 0x0101, unit=0x01)
-        client1.write_register(0x0006, 0x0101, unit=0x01)
-        client1.write_register(0x0007, 0x0101, unit=0x01)
-
-        rc=client1.read_holding_registers(0x0000,16,unit=0x01)
-        result1=rc.registers
-        print(result1)
+        #result1=rl.registers
+        #print(result1)
 
 
 
