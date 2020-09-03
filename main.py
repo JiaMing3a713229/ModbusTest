@@ -32,7 +32,9 @@ def run_sync_client():
         #client1.write_register(0x0000, 0x0101, unit=0x02)
 
         #rc = client1.write_register(0x220,1,unit=0x02)
-        rc = client1.read_holding_registers(0x01,12,unit=0x02)
+        rc1 = client1.write_register(0x220,1,unit=0x02)
+
+        rc = client1.read_holding_registers(0x210,12,unit=0x02)
         print(rc.registers)
         #client1.write_register(0x0002, 0x0101, unit=0x02)
         #client1.write_register(0x0006, 0x0101, unit=0x02)
