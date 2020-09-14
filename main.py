@@ -1,11 +1,131 @@
 from pymodbus.client.sync import ModbusTcpClient
 import time
 from enum import Enum
-
+from PyQt5 import QtWidgets, QtGui, QtCore
+from pyqt5.pyqt5first import Ui_MainWindow
+import sys
 host = '127.0.0.1'
 port = 502
 nb_loop = nb_fail = 0
 Slave_ID = 2
+
+
+class MainWindow(QtWidgets.QMainWindow):
+
+    def __init__(self):
+        status_start = 0
+        super(MainWindow, self).__init__()
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+        # set icon
+        self.setWindowIcon(QtGui.QIcon('icon/ncuticon.png'))
+        palette = QtGui.QPalette()
+        palette.setBrush(self.backgroundRole(), QtGui.QColor(41, 36, 33))
+        self.setPalette(palette)
+
+        # MainWindow Title
+        self.setWindowTitle('台達電SCARA人機介面')
+
+        # seting progressBar
+        self.ui.progressBar_speed.setMinimum(0)
+        self.ui.progressBar_speed.setMaximum(99)
+        self.ui.progressBar_speed.setValue(0)
+
+        # seting progressBar_distance
+        self.ui.progressBar_distance.setMinimum(0)
+        self.ui.progressBar_distance.setMaximum(99)
+        self.ui.progressBar_distance.setValue(0)
+        # display speed & distance value
+        self.ui.horizontalSlider_speed.valueChanged.connect(self.sliderValue_speed)
+        self.ui.horizontalSlider_distance.valueChanged.connect(self.sliderValue_distance)
+
+        # Dial_speed
+        self.ui.dial_speed.setRange(0, 100)
+        self.ui.dial_speed.setNotchesVisible(True)
+        self.ui.dial_speed.valueChanged.connect(self.dialValue_speed)
+
+        # Dial_distance
+        self.ui.dial_distance.setRange(0, 100)
+        self.ui.dial_distance.setNotchesVisible(True)
+        self.ui.dial_distance.valueChanged.connect(self.dialValue_distance)
+
+        # start_button
+
+        self.ui.pushButton_start.setText('OFF')
+        self.ui.pushButton_start.clicked.connect(self.pushButton_start)
+
+        # pushButton_forword
+        self.ui.pushButton_forword.setText('forword')
+        # action
+        # self.ui.pushButton_start.clicked.connect(self.pushButton_start)
+
+        # pushButton_left
+        self.ui.pushButton_left.setText('left')
+        # action
+        # self.ui.pushButton_start.clicked.connect(self.pushButton_start)
+
+        # pushButton_right
+        self.ui.pushButton_right.setText('right')
+        # action
+        # self.ui.pushButton_start.clicked.connect(self.pushButton_start)
+
+        # pushButton_back
+        self.ui.pushButton_back.setText('back')
+        # action
+        # self.ui.pushButton_start.clicked.connect(self.pushButton_start)
+
+        # pushButton_up
+        self.ui.pushButton_up.setText('up')
+        # action
+        # self.ui.pushButton_start.clicked.connect(self.pushButton_start)
+
+        # pushButton_down
+        self.ui.pushButton_down.setText('down')
+        # action
+        # self.ui.pushButton_start.clicked.connect(self.pushButton_start)
+
+        # pushButton_rz1
+        self.ui.pushButton_rz1.setText('-')
+        # action
+        # self.ui.pushButton_start.clicked.connect(self.pushButton_start)
+
+        # pushButton_rz2
+        self.ui.pushButton_rz2.setText('+')
+        # action
+        # self.ui.pushButton_start.clicked.connect(self.pushButton_start)
+
+        # pushButton_reset
+        self.ui.pushButton_reset.setText('reset')
+        self.ui.pushButton_reset.clicked.connect(self.butten_reset)
+        # action
+        # self.ui.pushButton_start.clicked.connect(self.pushButton_start)
+
+        # label_Z
+        self.ui.label_Z.setText('Z')
+
+        # label_rz
+        self.ui.label_rz.setText('RZ')
+
+        # self.ui.timeEdit.date()
+
+    def sliderValue_speed(self):
+        self.ui.progressBar_speed.setValue(self.ui.horizontalSlider_speed.value())
+
+    def sliderValue_distance(self):
+        self.ui.progressBar_distance.setValue(self.ui.horizontalSlider_distance.value())
+
+    def dialValue_speed(self):
+        self.ui.progressBar_speed.setValue(self.ui.dial_speed.value())
+
+    def dialValue_distance(self):
+        self.ui.progressBar_distance.setValue(self.ui.dial_distance.value())
+
+    def pushButton_start(self):
+        self.ui.pushButton_start.setText('ON')
+
+    def butten_reset(self):
+        print("reset!")
+
 
 class pointAddress(Enum):
     X = 0x1010
@@ -167,7 +287,10 @@ def write_relief_point_data():
 
 
 if __name__ == "__main__":
-    run_sync_client()
+    app = QtWidgets.QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec_())
 
 
 
